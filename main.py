@@ -41,16 +41,42 @@ X_test = sc_X.transform(X_test)
 # 4. Construcción de la Red Neuronal
 import keras
 from keras.models import Sequential
-from keras.layer import Dense
+from keras.layers import Dense
+
+##Secuential para iniciar la red neuronal
+classifier = Sequential()
+
+##Añadir la capa de entrada y oculta
+classifier.add(Dense(units = 6, kernel_initializer = "uniform", 
+                     activation = "relu", input_dim = 11))
+
+## Añadir la segunda capa oculta
+classifier.add(Dense(units = 6, kernel_initializer = "uniform", 
+                     activation = "relu"))
+
+##Añadir capa de salida
+classifier.add(Dense(units = 1, kernel_initializer = "uniform", 
+                     activation = "sigmoid"))
 
 
+## Compilar la red neuronal
+classifier.compile(optimizer = "adam", loss = "binary_crossentropy", metrics = ["accuracy"])
 
 
+### Ajustar la ANN con el entrenamiento
+classifier.fit(X_train, y_train, batch_size = 10, epochs = 100)
 
 
+# 5. Evaluación de la ANN
+y_pred = classifier.predict(X_test)
 
+## Usando un umbral
+y_pred = (y_pred > 0.5)
 
+from sklearn.metrics import confusion_matrix
+cm = confusion_matrix(y_test, y_pred)
 
+print((1548+134)/2000)
 
 
 
